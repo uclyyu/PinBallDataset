@@ -60,21 +60,33 @@ class MeshObject(object):
 			basePosition=position,
 			baseOrientation=orientation)
 
+	def remove(self):
+		b.removeBody(self.body)
+
 
 class PinBallDataGenerator(object):
-	def __init__(self, connect):
+	def __init__(self, connect, filename_ball, filename_cube, palette):
 		self.egl_plugin = None
 
 		if connect = b.DIRECT:
 			self.client = b.connect(connect)
+			self.gui = False
 			# Try hardware acceleration
 			egl = pkgutil.get_loader('eglRenderer')
 			if egl is not None:
 				self.egl_plugin = b.loadPlugin(egl.get_filename(), '_eglRendererPlugin')
 		elif connect = b.GUI:
 			self.client = b.connect(connect)
+			self.gui = True
 
+		b.setAdditionalSearchPath(pybullet_data.getDataPath())
+		b.setGravity(0., 0., -10.)
 
+		if self.gui:
+			b.configureDebugVisualizer(b.COV_ENABLE_DEPTH_BUFFER_PREVIEW, 0)
+			b.configureDebugVisualizer(b.COV_ENABLE_SEGMENTATION_MARK_PREVIEW, 0)
+			b.configureDebugVisualizer(b.COV_ENABLE_TINY_RENDERER, 0)
+			b.configureDebugVisualizer(b.COB_ENABLE_RENDERING, 0)
 
 
 rgba_picker = RGBSpace()
